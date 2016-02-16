@@ -1,0 +1,25 @@
+{
+  "name": "comp392-Assignment2 - Solar System",
+  "authors": [
+    "Johanna Ponce <johipe@gmail.com>"
+  ],
+  "description": "COMP392-Assignment2 - Solar System for Advanced Graphics",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "http://github.com/CentennialCollege/COMP392-Lesson01-Part2",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "Scripts/lib"
+  ],
+  "dependencies": {
+    "three.js": "threejs#*",
+    "dat-gui": "~0.5.1",
+    "stats.js": "*",
+    "threex.colliders": "*"
+  }
+}
