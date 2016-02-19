@@ -32,9 +32,11 @@ import Point = objects.Point;
 import gameObject = objects.gameObject;
 
 var emptyObject: Object3D;
+var emptyObjectMoon: Object3D;
 var scene: Scene;
 var renderer: Renderer;
 var camera: PerspectiveCamera;
+var zoomEarthCamera: PerspectiveCamera;
 var axes: AxisHelper;
 var cube: Mesh;
 var plane: Mesh;
@@ -65,7 +67,7 @@ var moon1_planet4: Mesh;
 var moon2_planet4: Mesh;
 var cylinder;
 var textureLoader = new THREE.TextureLoader()
-var earthTexture, moonTexture, sunTexture, marsTexture, saturnTexture, planet4Texture, planet5Texture;
+var earthTexture, moonTexture, sunTexture, marsTexture, saturnTexture, planet4Texture, planet5Texture, ringTexture;
 
 function init() {
 
@@ -76,13 +78,14 @@ function init() {
     saturnTexture = textureLoader.load("/Content/img/planet_texture5.png");
     planet4Texture = textureLoader.load("/Content/img/planet_texture3.png");
     planet5Texture = textureLoader.load("/Content/img/planet_texture4.png");
+    ringTexture = textureLoader.load("/Content/img/SaturnRings.png");
     // Instantiate a new Scene object
     scene = new Scene();
 
 
     setupRenderer(); // setup the default renderer
-	
-    setupCamera(); // setup the camera
+	setupZoomEarthCamera();
+    //setupCamera(); // setup the camera
 	
     // add an axis helper to the scene
     axes = new AxisHelper(20);
@@ -90,9 +93,10 @@ function init() {
     console.log("Added Axis Helper to scene...");
     
     ring = new gameObject(
-        new THREE.RingGeometry(6, 8,18,18, 0, Math.PI * 2),
-        new THREE.MeshLambertMaterial({color: 0x9FB6CD, wireframe: true}),
-        -40, 0, 0);
+    new THREE.RingGeometry(6, 8,18,18, 0, Math.PI * 2),
+    //new THREE.MeshLambertMaterial({ map: ringTexture, transparent: false }),
+    new THREE.MeshLambertMaterial({color: 0x9FB6CD, wireframe: true}),
+    -40, 0, 0);
     
     ring.rotation.y = 10;
     ring.rotation.x = 20;
@@ -144,6 +148,8 @@ function init() {
 
     emptyObject = new Object3D();
     emptyObject.position.set(0, 0, 0);
+    
+ 
 
     sunlight = new THREE.DirectionalLight(0xFFFFFF);
     sunlight.position.set(0, 0, 0);
@@ -203,7 +209,7 @@ function init() {
     console.log("Added Cube Primitive to scene...");
 
     sphere = new gameObject(
-        new SphereGeometry(8, 20, 20), //2
+        new SphereGeometry(8, 32, 32), //2
         //new LambertMaterial({ color: 0xff35ff }),
         new THREE.MeshPhongMaterial({ map: earthTexture, transparent: false }),
         30, 0, 0);
@@ -218,7 +224,15 @@ function init() {
         new THREE.MeshPhongMaterial({ map: moonTexture, transparent: false }),
         15, 0, 0); //2
 
-    sphere.add(moon)
+    //sphere.add(moon);
+    //sphere.add(camera);
+    
+    emptyObjectMoon = new Object3D();
+    emptyObjectMoon.position.set(30, 0, 0);
+    
+    emptyObjectMoon.add(moon);
+    
+    
     console.log("Added Child Cube Primitive to cube object...");
     
         moon1_planet4 = new gameObject(
@@ -247,21 +261,21 @@ function init() {
     
     mars = new gameObject(
     new THREE.SphereGeometry(6, 32, 32),
-    new THREE.MeshPhongMaterial({map: marsTexture, transparent: true}), 
+    new THREE.MeshPhongMaterial({map: marsTexture, transparent: false}), 
     50,0,0);
     
     scene.add(mars);
     
     saturn = new gameObject(
     new THREE.SphereGeometry(5, 32, 32),
-    new THREE.MeshPhongMaterial({map: saturnTexture, transparent: true}), 
+    new THREE.MeshPhongMaterial({map: saturnTexture, transparent: false}), 
     -40,0,0);
     
     scene.add(saturn);
     
     planet4 = new gameObject(
     new THREE.SphereGeometry(3, 32, 32),
-    new THREE.MeshPhongMaterial({map: planet4Texture, transparent: true}), 
+    new THREE.MeshPhongMaterial({map: planet4Texture, transparent: false}), 
     -55,0,0);
     
     planet4.add(moon1_planet4);
@@ -270,7 +284,7 @@ function init() {
     
     planet5 = new gameObject(
     new THREE.SphereGeometry(4, 32, 32),
-    new THREE.MeshPhongMaterial({map: planet5Texture, transparent: true}), 
+    new THREE.MeshPhongMaterial({map: planet5Texture, transparent: false}), 
     60,0,0);
     
     scene.add(planet5);
@@ -280,10 +294,13 @@ function init() {
 //earth.position.set(5,9,10);
 
     //scene.add(planet2);
-                     
-         
+                   
+    //emptyObject.add(camera);  
+    emptyObjectMoon.add(camera);
+    emptyObject.add(emptyObjectMoon);    
     emptyObject.add(sphere);
     scene.add(emptyObject); 
+    
     //scene.add(sphere);
     console.log("Added Cube Primitive to scene...");
     
@@ -307,7 +324,7 @@ function init() {
     
     // add controls
     gui = new GUI();
-    control = new Control(0.005);
+    control = new Control(0.002);
     addControl(control);
     //gui = new GUI();
     //control = new Control(customMesh);
@@ -348,11 +365,14 @@ function gameLoop(): void {
     stats.update();
     //rotation
     sphere.rotation.y += control.rotationSpeed;
-    moon.rotation.y += control.rotationSpeed;
+    
+    moon.rotation.y += (control.rotationSpeed*3);
+    
+    emptyObjectMoon.rotation.y += (control.rotationSpeed*8);
     
     planet4.rotation.y -= control.rotationSpeed;
 
-    earth.rotation.y += control.rotationSpeed;
+//    earth.rotation.y += control.rotationSpeed;
 
     emptyObject.rotation.y += control.rotationSpeed;
     
@@ -404,4 +424,14 @@ function setupCamera(): void {
     camera.position.z = 80;
     camera.lookAt(new Vector3(5, 0, 0));
     console.log("Finished setting up Camera...");
+}
+
+// Setup main camera for the scene
+function setupZoomEarthCamera(): void {
+    camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.x = 0;
+    camera.position.y = 0;
+    camera.position.z = 25;
+    camera.lookAt(new Vector3(5, 0, 0));
+    console.log("Finished setting up zoom Earth Camera...");
 }
