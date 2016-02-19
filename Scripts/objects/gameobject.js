@@ -8,6 +8,7 @@ var objects;
 (function (objects) {
     var gameObject = (function (_super) {
         __extends(gameObject, _super);
+        //public material: THREE.MeshPhongMaterial;
         //CONSTRUCTOR ++++++++++++++++++++++++++++++++++++++++++++++++++++
         function gameObject(geometry, material, x, y, z) {
             _super.call(this, geometry, material);
@@ -19,6 +20,9 @@ var objects;
             this.receiveShadow = true;
             this.castShadow = true;
         }
+        gameObject.prototype.applyTexture = function () {
+            //_material.
+        };
         return gameObject;
     })(THREE.Mesh);
     objects.gameObject = gameObject;

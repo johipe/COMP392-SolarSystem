@@ -4,7 +4,8 @@ module objects {
     export class gameObject extends THREE.Mesh {
         //PRIVATE INSTANCE VARIABLES +++++++++++++++++++++++++++++++++++++
         private _geometry: THREE.Geometry;
-        private _material: THREE.Material;
+        public _material: THREE.Material;
+        //public material: THREE.MeshPhongMaterial;
         //CONSTRUCTOR ++++++++++++++++++++++++++++++++++++++++++++++++++++
         constructor(geometry: THREE.Geometry, material: THREE.Material, x:number, y:number, z:number) {
             super(geometry, material);
@@ -16,5 +17,10 @@ module objects {
             this.receiveShadow = true;
             this.castShadow = true;
         }
+        
+       public applyTexture() :void       
+      {
+      //_material.
+      }
     }
 }

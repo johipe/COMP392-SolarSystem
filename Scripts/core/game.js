@@ -18,6 +18,7 @@ var Object3D = THREE.Object3D;
 var SpotLight = THREE.SpotLight;
 var PointLight = THREE.PointLight;
 var AmbientLight = THREE.AmbientLight;
+var DirectionalLight = THREE.DirectionalLight;
 var Control = objects.Control;
 var GUI = dat.GUI;
 var Color = THREE.Color;
@@ -26,6 +27,7 @@ var Face3 = THREE.Face3;
 var Point = objects.Point;
 //Custom Game Objects
 var gameObject = objects.gameObject;
+var emptyObject;
 var scene;
 var renderer;
 var camera;
@@ -33,7 +35,9 @@ var axes;
 var cube;
 var plane;
 var sphere;
+var earth;
 var sun;
+var sunlight;
 var planet;
 var planet2;
 var ambientLight;
@@ -48,7 +52,13 @@ var customGeometry;
 var customMaterials = new Array();
 var customMesh;
 var moon;
+var cylinder;
+var textureLoader = new THREE.TextureLoader();
+var earthTexture, moonTexture, sunTexture;
 function init() {
+    earthTexture = textureLoader.load("/Content/img/1_earth_1k.jpg");
+    moonTexture = textureLoader.load("/Content/img/moonmap1k.jpg");
+    sunTexture = textureLoader.load("/Content/img/realsun.jpg");
     // Instantiate a new Scene object
     scene = new Scene();
     setupRenderer(); // setup the default renderer
@@ -70,38 +80,106 @@ function init() {
      scene.add(plane);
      console.log("Added Plane Primitive to scene...");
        */
-    //Add a Cube to the Scene
-    sun = new gameObject(new SphereGeometry(4, 20, 20), new LambertMaterial({ color: 0xff35ff }), 0, 4, 0);
-    //scene.add(sun);
+    /*  earth = new THREE.Mesh(
+  new THREE.SphereGeometry(8, 32, 32),
+  new THREE.MeshPhongMaterial({
+    map: THREE.ImageUtils.loadTexture('/Content/img/1_earth_1k.jpg'),
+    transparent: true
+  })
+);*/
+    /*  sphere = new gameObject(
+          new SphereGeometry(8, 20, 20), //2
+          new LambertMaterial({ color: 0xff35ff }),
+          15, 0, 0);
+  
+       earth = new THREE.Mesh(
+    new THREE.SphereGeometry(8, 32, 32),
+    new THREE.MeshPhongMaterial({
+      map: earthTexture,
+      transparent: true
+    })
+  );*/
+    earth = new gameObject(new THREE.SphereGeometry(8, 32, 32), new THREE.MeshPhongMaterial({ map: earthTexture, transparent: true }), 5, 9, 0);
+    earth.position.set(5, 9, 10);
+    //scene.add(earth);
+    console.log("Added earth planet to scene...");
+    emptyObject = new Object3D();
+    emptyObject.position.set(0, 0, 0);
+    sunlight = new THREE.DirectionalLight(0xFFFFFF);
+    sunlight.position.set(0, 0, 0);
+    var obj1 = new THREE.Object3D();
+    obj1.position.set(10, 0, 0);
+    scene.add(obj1);
+    sunlight.target = obj1;
+    sunlight.castShadow = true;
+    var sunlight2 = new THREE.DirectionalLight(0xFFFFFF);
+    sunlight2.position.set(0, 0, 0);
+    var obj2 = new THREE.Object3D();
+    obj2.position.set(-10, 0, 0);
+    scene.add(obj2);
+    sunlight2.target = obj2;
+    sunlight2.castShadow = true;
+    scene.add(sunlight2);
+    //sunlight.target.position = new THREE.Object3D();
+    // sunlight.target.position.x = 5;
+    //sunlight.target.position.y = 9;
+    //sunlight.target.position.z = 0;
+    //sunlight.target.position.set(5, 9, 0);
+    //sunlight.shadowCameraVisible = true;
+    //sunlight.lookAt(new Vector3(-50, 0, 0));
+    //Add a Cube to the Scene        
+    sun = new gameObject(new SphereGeometry(8, 32, 32), 
+    //new LambertMaterial({ color: 0xffff00 }),
+    new THREE.MeshPhongMaterial({ map: sunTexture, transparent: false }), 0, 0, 0);
+    scene.add(sunlight);
+    //sun.add(sunlight);
+    scene.add(sun);
     console.log("Added Cube Primitive to scene...");
     sphere = new gameObject(new SphereGeometry(8, 20, 20), //2
-    new LambertMaterial({ color: 0xff35ff }), 10, 0, 0);
+    //new LambertMaterial({ color: 0xff35ff }),
+    new THREE.MeshPhongMaterial({ map: earthTexture, transparent: false }), 30, 0, 0);
     //sun.add(sphere);
-    scene.add(sphere);
-    console.log("Added Cube Primitive to scene...");
-    moon = new gameObject(new SphereGeometry(6, 10, 10), //0.5
-    new LambertMaterial({ color: 0xff0000 }), 15, 0, 0); //2
+    //scene.add(sphere);
+    //console.log("Added Cube Primitive to scene...");
+    moon = new gameObject(new SphereGeometry(4, 32, 32), //0.5
+    //new LambertMaterial({ color: 0xff0000 }),
+    new THREE.MeshPhongMaterial({ map: moonTexture, transparent: false }), 15, 0, 0); //2
     sphere.add(moon);
     console.log("Added Child Cube Primitive to cube object...");
-    planet2 = new gameObject(new SphereGeometry(2, 20, 20), new LambertMaterial({ color: 0xff3500 }), 20, 0, 0);
+    planet2 = new gameObject(new SphereGeometry(6, 20, 20), new LambertMaterial({ color: 0x00ff00 }), -10, 0, 0);
     //sun.add(planet2);
-    scene.add(sphere);
+    planet2.applyMatrix(new THREE.Matrix4().makeTranslation(14, 0, 0));
+    //scene.add(planet2);
+    emptyObject.add(sphere);
+    scene.add(emptyObject);
+    //scene.add(sphere);
     console.log("Added Cube Primitive to scene...");
+    // CYLINDER
+    var cyl_material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    var cyl_width = 1;
+    var cyl_height = 5;
+    // THREE.CylinderGeometry(bottomRadius, topRadius, height, segmentsRadius, segmentsHeight, openEnded )
+    var cylGeometry = new THREE.CylinderGeometry(cyl_width, cyl_width, cyl_height, 20, 1, false);
+    // translate the cylinder geometry so that the desired point within the geometry is now at the origin
+    cylGeometry.translate(0, 10, 0); // three.js r.72
+    //cylGeometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, cyl_height/2, 0 ) );
+    cylinder = new THREE.Mesh(cylGeometry, cyl_material);
+    //scene.add( cylinder ); 
     // Add an AmbientLight to the scene
-    ambientLight = new AmbientLight(0x090909);
+    ambientLight = new AmbientLight(0xC4C394);
     scene.add(ambientLight);
     console.log("Added an Ambient Light to Scene");
     // Add a SpotLight to the scene
     spotLight = new SpotLight(0xffffff);
     spotLight.position.set(-40, 60, 10);
     spotLight.castShadow = true;
-    scene.add(spotLight);
+    //scene.add(spotLight);
     console.log("Added a SpotLight Light to Scene");
     // Call the Custom Mesh function
     //initializeCustomMesh();
     // add controls
     gui = new GUI();
-    control = new Control(0.05);
+    control = new Control(0.005);
     addControl(control);
     //gui = new GUI();
     //control = new Control(customMesh);
@@ -136,6 +214,12 @@ function gameLoop() {
     //rotation
     sphere.rotation.y += control.rotationSpeed;
     moon.rotation.y += control.rotationSpeed;
+    earth.rotation.y += control.rotationSpeed;
+    emptyObject.rotation.y += control.rotationSpeed;
+    // planet2.translateX(10); // three.js r.72
+    // planet2.applyMatrix( new THREE.Matrix4().makeTranslation(-10, 0, 0) );
+    planet2.rotation.x += 0.03;
+    cylinder.rotation.x = 0.5 * Math.PI;
     // sun.rotation.y += control.rotationSpeed;
     /**
         vertices = new Array<Vector3>();
@@ -167,7 +251,7 @@ function setupCamera() {
     camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.x = -20;
     camera.position.y = 25;
-    camera.position.z = 20;
+    camera.position.z = 80;
     camera.lookAt(new Vector3(5, 0, 0));
     console.log("Finished setting up Camera...");
 }
