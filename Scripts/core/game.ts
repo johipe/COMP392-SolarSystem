@@ -84,8 +84,8 @@ function init() {
 
 
     setupRenderer(); // setup the default renderer
-	setupZoomEarthCamera();
-    //setupCamera(); // setup the camera
+	//setupZoomEarthCamera();
+    setupCamera(); // setup the camera
 	
     // add an axis helper to the scene
     axes = new AxisHelper(20);
@@ -296,7 +296,7 @@ function init() {
     //scene.add(planet2);
                    
     //emptyObject.add(camera);  
-    emptyObjectMoon.add(camera);
+    //emptyObjectMoon.add(camera);
     emptyObject.add(emptyObjectMoon);    
     emptyObject.add(sphere);
     scene.add(emptyObject); 
@@ -349,6 +349,8 @@ function onResize(): void {
 
 function addControl(controlObject: Control): void {
     gui.add(controlObject, 'rotationSpeed', -0.5, 0.5);
+    gui.add(controlObject, 'switchCamera');
+    gui.add(controlObject, 'zoom').listen();
 }
 
 function addStatsObject() {
