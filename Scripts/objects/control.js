@@ -9,6 +9,7 @@ var objects;
             this.zoom = "ZoomOut";
         }
         //PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++
+        //Control Switch event action for Zoom In and ZoomOut the camera
         Control.prototype.switchCamera = function () {
             if (this.zoom == "Zoom In Earth") {
                 camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -34,39 +35,4 @@ var objects;
     })();
     objects.Control = Control;
 })(objects || (objects = {}));
-/**
-
-module objects {
-    // CONTROL CLASS ++++++++++++++++++++++++++++++++++++++++++
-    export class Control {
-        //PUBLIC INSTANCE VARIABLES +++++++++++++++++++++++++++
-        public points: objects.Point[];
-        public mesh: Object3D;
-        // CONSTRUCTOR ++++++++++++++++++++++++++++++++++++++++
-        constructor(mesh: Object3D) {
-            this.points = new Array<objects.Point>();
-            this.mesh = mesh;
-        }
-        
-        //PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++
-        public clone(): void {
-            var materials = [
-                new THREE.MeshLambertMaterial({ opacity: 0.6, color: 0xff44ff, transparent: true }),
-                new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true })
-            ];
-
-            var mesh2 = THREE.SceneUtils.createMultiMaterialObject(customGeometry, materials);
-            mesh2.children.forEach(function(child) {
-                child.castShadow = true
-            });
-            mesh2.translateX(5);
-            mesh2.translateZ(5);
-            mesh2.name = "clone";
-            scene.remove(scene.getObjectByName("clone"));
-            scene.add(mesh2);
-        }
-    }
-}
- 
-*/ 
 //# sourceMappingURL=control.js.map
