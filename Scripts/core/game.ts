@@ -30,6 +30,7 @@ var emptyObjectforSaturn: Object3D;
 var emptyObjectforPlanet4: Object3D;
 var emptyObjectforPlanet5: Object3D;
 var emptyObjectMoon: Object3D;
+var emptyObjectCamera: Object3D;
 var scene: Scene;
 var renderer: Renderer;
 var camera: PerspectiveCamera;
@@ -83,29 +84,11 @@ function init() {
         new THREE.MeshPhongMaterial({ map: sunTexture, transparent: true }),
         0, 0, 0);
 
-    //Adding directional lights to simulate the sun lights
-    sunlight = new THREE.SpotLight(0xFFFFFF, 1,5);
-    sunlight.position.set(0, 0, 0);
-    //sunlight.angle = Math.PI /2;
-   // sunlight.angle = 60 * (Math.PI /180);
-   //sunlight.position = new THREE.Vector3(-10,0,0);
-
-    
-    var obj1 = new THREE.Object3D();
-    obj1.position.set(50, 0, 0);
-    
-    scene.add(obj1);
-    
-    //sunlight.target.position.set(50,0,0);
-    sunlight.target = obj1;
-    sunlight.castShadow = true;
-    
-    //scene.add(sunlight);
     
     
 var pointlight = new THREE.PointLight();
 pointlight.position.set(0,0,0);
-scene.add(pointlight);    
+//scene.add(pointlight);    
       
 var spotlight = new THREE.SpotLight(0xFFFFFF, 1);
 spotlight.position.set(0,0,0);
@@ -134,54 +117,14 @@ spotlight4.target.position.set(0,0,-50);
 spotlight4.angle = Math.PI /2;
 scene.add(spotlight4);
 scene.add(spotlight4.target);
+
+var spotlight5 = new THREE.SpotLight(0xFFFFFF, 1);
+spotlight5.position.set(0,0,0);
+spotlight5.target.position.set(50,0,50);
+spotlight5.angle = Math.PI /2;
+scene.add(spotlight5);
+scene.add(spotlight5.target);
      
-    
-    //var directionalLightHelper = new THREE.DirectionalLightHelper(sunlight, 10); 
-    //scene.add( directionalLightHelper); 
-
-    var sunlight2 = new THREE.SpotLight(0xFFFFFF, 1.5);
-    sunlight2.position.set(0, 0, 0);
-    var obj2 = new THREE.Object3D();
-    obj2.position.set(-50, 0, 0);
-    scene.add(obj2);
-    sunlight2.target = obj2;
-    sunlight2.castShadow = true;
-    //sunlight2.angle = 60 * (Math.PI /180);
-    sunlight2.angle = Math.PI /2;
-    //scene.add(sunlight2)
-
-    var sunlight3 = new THREE.SpotLight(0xFFFFFF, 1.5);
-    sunlight3.position.set(0, 0, 0);
-    var obj3 = new THREE.Object3D();
-    obj3.position.set(50, 0, 0);//0,050
-    scene.add(obj3);
-    sunlight3.target = obj3;
-    sunlight3.castShadow = true;
-    //sunlight3.angle = 60 * (Math.PI /180);
-    sunlight3.angle = Math.PI /2;
-    //scene.add(sunlight3)
-    
-    var sunlight5 = new THREE.SpotLight(0xFFFFFF, 1.5);
-    sunlight5.position.set(0, 0, 0);
-    var obj5 = new THREE.Object3D();
-    obj5.position.set(0, 0, 50);//0,050
-    scene.add(obj5);
-    sunlight5.target = obj5;
-    sunlight5.castShadow = true;
-    //sunlight5.angle = 60 * (Math.PI /180);
-    sunlight5.angle = Math.PI /2;
-    //scene.add(sunlight5)
-
-    var sunlight4 = new THREE.SpotLight(0xFFFFFF, 1.5);
-    sunlight4.position.set(0, 0, 0);
-    var obj4 = new THREE.Object3D();
-    obj4.position.set(0, 0, -50);
-    scene.add(obj4);
-    sunlight4.target = obj4;
-    sunlight4.castShadow = true;
-    sunlight4.angle = 60 * (Math.PI /180);
-    //scene.add(sunlight4)
-
     scene.add(sun);
     
     //sun.add(sunlight);
@@ -191,7 +134,7 @@ scene.add(spotlight4.target);
     earth = new gameObject(
         new THREE.SphereGeometry(8, 32, 32),
         new THREE.MeshPhongMaterial({ map: earthTexture, transparent: false }),
-        30, 0, 0);
+        40, 0, 0);
 
     // earth.position.set(5, 9, 10);
     //scene.add(earth);
@@ -207,7 +150,7 @@ scene.add(spotlight4.target);
     
     //empty object to rotate moon around the earth
     emptyObjectMoon = new Object3D();
-    emptyObjectMoon.position.set(30, 0, 0);
+    emptyObjectMoon.position.set(40, 0, 0);
     emptyObjectMoon.add(moon);
     console.log("Added moon to moon empty object...");
    
@@ -222,9 +165,9 @@ scene.add(spotlight4.target);
     
     //Mars object
     mars = new gameObject(
-        new THREE.SphereGeometry(6, 32, 32),
+        new THREE.SphereGeometry(4, 32, 32),
         new THREE.MeshPhongMaterial({ map: marsTexture, transparent: false }),
-        50, 0, 0);
+        15, 0, 0);
         
     emptyObjectforMars = new Object3D();
     emptyObjectforMars.position.set(0,0,0);
@@ -238,13 +181,13 @@ scene.add(spotlight4.target);
     saturn = new gameObject(
         new THREE.SphereGeometry(5, 32, 32),
         new THREE.MeshPhongMaterial({ map: saturnTexture, transparent: false }),
-        -40, 0, 0);
+        -65, 0, 0);
 
     ring = new gameObject(
         new THREE.RingGeometry(6, 8, 18, 18, 0, Math.PI * 2),
         //new THREE.MeshLambertMaterial({ map: ringTexture, transparent: false }),
         new THREE.MeshLambertMaterial({ color: 0x9FB6CD, wireframe: true }),
-        -40, 0, 0);
+        -65, 0, 0);
 
     ring.rotation.y = 10;
     ring.rotation.x = 20;
@@ -265,7 +208,10 @@ scene.add(spotlight4.target);
     planet4 = new gameObject(
         new THREE.SphereGeometry(3, 32, 32),
         new THREE.MeshPhongMaterial({ map: planet4Texture, transparent: false }),
-        -55, 0, 0); 
+        -75, 0, 0); 
+        
+
+        
         
      moon1_planet4 = new gameObject(
         new SphereGeometry(1, 32, 32), //0.5
@@ -281,31 +227,43 @@ scene.add(spotlight4.target);
 
     planet4.add(moon1_planet4);
     planet4.add(moon2_planet4);
-    scene.add(planet4);
+    
+        emptyObjectforPlanet4 = new Object3D();
+        emptyObjectforPlanet4.position.set(0,0,0);
+        emptyObjectforPlanet4.add(planet4);
+        scene.add(emptyObjectforPlanet4)
+    
+    //scene.add(planet4);
     console.log("Added Planet 4 and moons to scene...");
 
     //Planet5 object
     planet5 = new gameObject(
         new THREE.SphereGeometry(4, 32, 32),
         new THREE.MeshPhongMaterial({ map: planet5Texture, transparent: false }),
-        60, 0, 0);
+        85, 0, 0);
+        
+        emptyObjectforPlanet5 = new Object3D();
+        emptyObjectforPlanet5.position.set(0,0,0);
+        emptyObjectforPlanet5.add(planet5);
+        
+        scene.add(emptyObjectforPlanet5);
 
-    scene.add(planet5);
+    //scene.add(planet5);
     console.log("Added Planet5 to scene...");
     
     // Add an AmbientLight to the scene
     //ambientLight = new AmbientLight(0x0c0c0c);
-    ambientLight = new AmbientLight(0x909090);
+    ambientLight = new AmbientLight(0xb0b0b0);
     scene.add(ambientLight);
     console.log("Added an Ambient Light to Scene");
 	
-    // Add a SpotLight to the scene
-    /* spotLight = new SpotLight(0xffffff);
-     spotLight.position.set(-40, 60, 10);
-     spotLight.castShadow = true;
-     //scene.add(spotLight);
+     //Add a SpotLight to the scene
+     var spotLightToSun = new SpotLight(0xffffff);
+     spotLightToSun.position.set(0, 0, 50); //-40, 60, 10
+     spotLightToSun.castShadow = true;
+    // scene.add(spotLightToSun);
      console.log("Added a SpotLight Light to Scene");
-     */
+     
  
     // add controls
     gui = new GUI();
@@ -359,7 +317,13 @@ function gameLoop(): void {
     mars.rotation.y +=control.rotationSpeed;
     
     emptyObjectforSaturn.rotation.y += control.rotationSpeed *1.5;
-    saturn.y += control.rotationSpeed;
+    saturn.rotation.y += control.rotationSpeed;
+    
+    emptyObjectforPlanet4.rotation.y += control.rotationSpeed;
+    planet4.rotation.y += control.rotationSpeed *8;
+    
+    emptyObjectforPlanet5.rotation.y += control.rotationSpeed * 4;
+    planet5.rotation.y += control.rotationSpeed;
 
     // render using requestAnimationFrame
     requestAnimationFrame(gameLoop);
@@ -379,11 +343,11 @@ function setupRenderer(): void {
 
 // Setup main camera for the scene
 function setupCamera(): void {
-    camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.x = -20;
-    camera.position.y = 25;
-    camera.position.z = 80;
-    camera.lookAt(new Vector3(5, 0, 0));
+    camera = new PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.x = 0;
+    camera.position.y = 80;
+    camera.position.z = 160;
+    camera.lookAt(new Vector3(0, 0, 0));
     console.log("Finished setting up Camera...");
 }
 
@@ -400,8 +364,7 @@ function setupZoomEarthCamera(): void {
 function loadTextures(): void {
     earthTexture = textureLoader.load("/Content/img/1_earth_1k.jpg");
     moonTexture = textureLoader.load("/Content/img/moonmap1k.jpg");
-    sunTexture = textureLoader.load("/Content/img/realsun.jpg"
-    );
+    sunTexture = textureLoader.load("/Content/img/realsun.jpg");
     marsTexture = textureLoader.load("/Content/img/planet_texture2.png");
     saturnTexture = textureLoader.load("/Content/img/planet_texture5.png");
     planet4Texture = textureLoader.load("/Content/img/planet_texture3.png");
