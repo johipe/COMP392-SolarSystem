@@ -1,3 +1,8 @@
+//Source File: Game.ts  
+//Author: Johanna Ponce 
+//Last Modified Date: Feb, 26, 2016  
+//Last Modified by: Johanna Ponce 
+//Main scene setup and controller for the Solar System. Assignment 2 for Advanced Graphics  
 /// <reference path="_reference.ts"/>
 // MAIN GAME FILE
 // THREEJS Aliases
@@ -70,9 +75,9 @@ function init() {
     sun = new gameObject(new SphereGeometry(8, 32, 32), 
     //new LambertMaterial({ color: 0xffff00 }),
     new THREE.MeshPhongMaterial({ map: sunTexture, transparent: true }), 0, 0, 0);
-    var pointlight = new THREE.PointLight();
-    pointlight.position.set(0, 0, 0);
-    //scene.add(pointlight);    
+    scene.add(sun);
+    console.log("Added Sun and sunlight to scene...");
+    //Adding spotlights to the sun position to simulate the sun effect
     var spotlight = new THREE.SpotLight(0xFFFFFF, 1);
     spotlight.position.set(0, 0, 0);
     spotlight.target.position.set(50, 0, 0);
@@ -103,9 +108,6 @@ function init() {
     spotlight5.angle = Math.PI / 2;
     scene.add(spotlight5);
     scene.add(spotlight5.target);
-    scene.add(sun);
-    //sun.add(sunlight);
-    console.log("Added Sun and sunlight to scene...");
     //Earth object
     earth = new gameObject(new THREE.SphereGeometry(8, 32, 32), new THREE.MeshPhongMaterial({ map: earthTexture, transparent: false }), 40, 0, 0);
     // earth.position.set(5, 9, 10);
@@ -142,14 +144,11 @@ function init() {
     new THREE.MeshLambertMaterial({ color: 0x9FB6CD, wireframe: true }), -65, 0, 0);
     ring.rotation.y = 10;
     ring.rotation.x = 20;
-    //saturn.add(ring);
     emptyObjectforSaturn = new Object3D();
     emptyObjectforSaturn.position.set(0, 0, 0);
     emptyObjectforSaturn.add(saturn);
     emptyObjectforSaturn.add(ring);
     scene.add(emptyObjectforSaturn);
-    //scene.add(ring);
-    //scene.add(saturn);
     console.log("Added Saturn and ring the Scene...");
     //Planet4 and moons objects    
     planet4 = new gameObject(new THREE.SphereGeometry(3, 32, 32), new THREE.MeshPhongMaterial({ map: planet4Texture, transparent: false }), -75, 0, 0);
@@ -184,7 +183,7 @@ function init() {
     var spotLightToSun = new SpotLight(0xffffff);
     spotLightToSun.position.set(0, 0, 50); //-40, 60, 10
     spotLightToSun.castShadow = true;
-    // scene.add(spotLightToSun);
+    //scene.add(spotLightToSun);
     console.log("Added a SpotLight Light to Scene");
     // add controls
     gui = new GUI();
@@ -229,10 +228,10 @@ function gameLoop() {
     mars.rotation.y += control.rotationSpeed;
     emptyObjectforSaturn.rotation.y += control.rotationSpeed * 1.5;
     saturn.rotation.y += control.rotationSpeed;
-    emptyObjectforPlanet4.rotation.y += control.rotationSpeed;
+    emptyObjectforPlanet4.rotation.y += control.rotationSpeed * 0.5;
     planet4.rotation.y += control.rotationSpeed * 8;
     emptyObjectforPlanet5.rotation.y += control.rotationSpeed * 4;
-    planet5.rotation.y += control.rotationSpeed;
+    planet5.rotation.y += control.rotationSpeed * 0.5;
     // render using requestAnimationFrame
     requestAnimationFrame(gameLoop);
     // render the scene

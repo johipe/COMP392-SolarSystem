@@ -1,3 +1,10 @@
+//Source File: Game.ts  
+//Author: Johanna Ponce 
+//Last Modified Date: Feb, 26, 2016  
+//Last Modified by: Johanna Ponce 
+//Main scene setup and controller for the Solar System. Assignment 2 for Advanced Graphics  
+
+
 /// <reference path="_reference.ts"/>
 
 // MAIN GAME FILE
@@ -83,52 +90,45 @@ function init() {
         //new LambertMaterial({ color: 0xffff00 }),
         new THREE.MeshPhongMaterial({ map: sunTexture, transparent: true }),
         0, 0, 0);
-
-    
-    
-var pointlight = new THREE.PointLight();
-pointlight.position.set(0,0,0);
-//scene.add(pointlight);    
-      
-var spotlight = new THREE.SpotLight(0xFFFFFF, 1);
-spotlight.position.set(0,0,0);
-spotlight.target.position.set(50,0,0);
-spotlight.angle = Math.PI /2;
-scene.add(spotlight);
-scene.add(spotlight.target);
-
-var spotlight2 = new THREE.SpotLight(0xFFFFFF, 1);
-spotlight2.position.set(0,0,0);
-spotlight2.target.position.set(-50,0,0);
-spotlight2.angle = Math.PI /2;
-scene.add(spotlight2);
-scene.add(spotlight2.target);
-
-var spotlight3 = new THREE.SpotLight(0xFFFFFF, 1);
-spotlight3.position.set(0,0,0);
-spotlight3.target.position.set(0,0,50);
-spotlight3.angle = Math.PI /2;
-scene.add(spotlight3);
-scene.add(spotlight3.target);
-
-var spotlight4 = new THREE.SpotLight(0xFFFFFF, 1);
-spotlight4.position.set(0,0,0);
-spotlight4.target.position.set(0,0,-50);
-spotlight4.angle = Math.PI /2;
-scene.add(spotlight4);
-scene.add(spotlight4.target);
-
-var spotlight5 = new THREE.SpotLight(0xFFFFFF, 1);
-spotlight5.position.set(0,0,0);
-spotlight5.target.position.set(50,0,50);
-spotlight5.angle = Math.PI /2;
-scene.add(spotlight5);
-scene.add(spotlight5.target);
-     
     scene.add(sun);
-    
-    //sun.add(sunlight);
     console.log("Added Sun and sunlight to scene...");
+
+  
+     //Adding spotlights to the sun position to simulate the sun effect
+    var spotlight = new THREE.SpotLight(0xFFFFFF, 1);
+    spotlight.position.set(0, 0, 0);
+    spotlight.target.position.set(50, 0, 0);
+    spotlight.angle = Math.PI / 2;
+    scene.add(spotlight);
+    scene.add(spotlight.target);
+
+    var spotlight2 = new THREE.SpotLight(0xFFFFFF, 1);
+    spotlight2.position.set(0, 0, 0);
+    spotlight2.target.position.set(-50, 0, 0);
+    spotlight2.angle = Math.PI / 2;
+    scene.add(spotlight2);
+    scene.add(spotlight2.target);
+
+    var spotlight3 = new THREE.SpotLight(0xFFFFFF, 1);
+    spotlight3.position.set(0, 0, 0);
+    spotlight3.target.position.set(0, 0, 50);
+    spotlight3.angle = Math.PI / 2;
+    scene.add(spotlight3);
+    scene.add(spotlight3.target);
+
+    var spotlight4 = new THREE.SpotLight(0xFFFFFF, 1);
+    spotlight4.position.set(0, 0, 0);
+    spotlight4.target.position.set(0, 0, -50);
+    spotlight4.angle = Math.PI / 2;
+    scene.add(spotlight4);
+    scene.add(spotlight4.target);
+
+    var spotlight5 = new THREE.SpotLight(0xFFFFFF, 1);
+    spotlight5.position.set(0, 0, 0);
+    spotlight5.target.position.set(50, 0, 50);
+    spotlight5.angle = Math.PI / 2;
+    scene.add(spotlight5);
+    scene.add(spotlight5.target);
     
     //Earth object
     earth = new gameObject(
@@ -168,9 +168,9 @@ scene.add(spotlight5.target);
         new THREE.SphereGeometry(4, 32, 32),
         new THREE.MeshPhongMaterial({ map: marsTexture, transparent: false }),
         15, 0, 0);
-        
+
     emptyObjectforMars = new Object3D();
-    emptyObjectforMars.position.set(0,0,0);
+    emptyObjectforMars.position.set(0, 0, 0);
     emptyObjectforMars.add(mars);
     scene.add(emptyObjectforMars);    
 
@@ -191,16 +191,13 @@ scene.add(spotlight5.target);
 
     ring.rotation.y = 10;
     ring.rotation.x = 20;
-    //saturn.add(ring);
+
     emptyObjectforSaturn = new Object3D();
-    emptyObjectforSaturn.position.set(0,0,0);
+    emptyObjectforSaturn.position.set(0, 0, 0);
     emptyObjectforSaturn.add(saturn);
     emptyObjectforSaturn.add(ring);
     scene.add(emptyObjectforSaturn);
-    
-    //scene.add(ring);
-    //scene.add(saturn);
-
+   
     console.log("Added Saturn and ring the Scene...");
 
 
@@ -208,30 +205,27 @@ scene.add(spotlight5.target);
     planet4 = new gameObject(
         new THREE.SphereGeometry(3, 32, 32),
         new THREE.MeshPhongMaterial({ map: planet4Texture, transparent: false }),
-        -75, 0, 0); 
-        
+        -75, 0, 0);
 
-        
-        
-     moon1_planet4 = new gameObject(
+    moon1_planet4 = new gameObject(
         new SphereGeometry(1, 32, 32), //0.5
         //new LambertMaterial({ color: 0xff0000 }),
         new THREE.MeshPhongMaterial({ map: moonTexture, transparent: false }),
         -5, -3, 0);
 
-     moon2_planet4 = new gameObject(
+    moon2_planet4 = new gameObject(
         new SphereGeometry(0.5, 32, 32), //0.5
         //new LambertMaterial({ color: 0xff0000 }),
         new THREE.MeshPhongMaterial({ map: moonTexture, transparent: false }),
-        3, 1, 2); 
+        3, 1, 2);
 
     planet4.add(moon1_planet4);
     planet4.add(moon2_planet4);
-    
-        emptyObjectforPlanet4 = new Object3D();
-        emptyObjectforPlanet4.position.set(0,0,0);
-        emptyObjectforPlanet4.add(planet4);
-        scene.add(emptyObjectforPlanet4)
+
+    emptyObjectforPlanet4 = new Object3D();
+    emptyObjectforPlanet4.position.set(0, 0, 0);
+    emptyObjectforPlanet4.add(planet4);
+    scene.add(emptyObjectforPlanet4)
     
     //scene.add(planet4);
     console.log("Added Planet 4 and moons to scene...");
@@ -241,12 +235,12 @@ scene.add(spotlight5.target);
         new THREE.SphereGeometry(4, 32, 32),
         new THREE.MeshPhongMaterial({ map: planet5Texture, transparent: false }),
         85, 0, 0);
-        
-        emptyObjectforPlanet5 = new Object3D();
-        emptyObjectforPlanet5.position.set(0,0,0);
-        emptyObjectforPlanet5.add(planet5);
-        
-        scene.add(emptyObjectforPlanet5);
+
+    emptyObjectforPlanet5 = new Object3D();
+    emptyObjectforPlanet5.position.set(0, 0, 0);
+    emptyObjectforPlanet5.add(planet5);
+
+    scene.add(emptyObjectforPlanet5);
 
     //scene.add(planet5);
     console.log("Added Planet5 to scene...");
@@ -257,14 +251,13 @@ scene.add(spotlight5.target);
     scene.add(ambientLight);
     console.log("Added an Ambient Light to Scene");
 	
-     //Add a SpotLight to the scene
-     var spotLightToSun = new SpotLight(0xffffff);
-     spotLightToSun.position.set(0, 0, 50); //-40, 60, 10
-     spotLightToSun.castShadow = true;
-    // scene.add(spotLightToSun);
-     console.log("Added a SpotLight Light to Scene");
+    //Add a SpotLight to the scene
+    var spotLightToSun = new SpotLight(0xffffff);
+    spotLightToSun.position.set(0, 0, 50); //-40, 60, 10
+    spotLightToSun.castShadow = true;
+    //scene.add(spotLightToSun);
+    console.log("Added a SpotLight Light to Scene");
      
- 
     // add controls
     gui = new GUI();
     control = new Control(0.002);
@@ -312,18 +305,18 @@ function gameLoop(): void {
     emptyObjectMoon.rotation.y += (control.rotationSpeed * 8);
     planet4.rotation.y -= control.rotationSpeed;
     emptyObject.rotation.y += control.rotationSpeed;
-    
+
     emptyObjectforMars.rotation.y += control.rotationSpeed * 2;
-    mars.rotation.y +=control.rotationSpeed;
-    
-    emptyObjectforSaturn.rotation.y += control.rotationSpeed *1.5;
+    mars.rotation.y += control.rotationSpeed;
+
+    emptyObjectforSaturn.rotation.y += control.rotationSpeed * 1.5;
     saturn.rotation.y += control.rotationSpeed;
-    
-    emptyObjectforPlanet4.rotation.y += control.rotationSpeed;
-    planet4.rotation.y += control.rotationSpeed *8;
-    
+
+    emptyObjectforPlanet4.rotation.y += control.rotationSpeed *0.5;
+    planet4.rotation.y += control.rotationSpeed * 8;
+
     emptyObjectforPlanet5.rotation.y += control.rotationSpeed * 4;
-    planet5.rotation.y += control.rotationSpeed;
+    planet5.rotation.y += control.rotationSpeed *0.5;
 
     // render using requestAnimationFrame
     requestAnimationFrame(gameLoop);

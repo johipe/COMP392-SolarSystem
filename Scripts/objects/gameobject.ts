@@ -1,4 +1,10 @@
-/// <reference path="../../typings/tsd.d.ts"/>
+//Source File: gameonject.ts  
+//Author: Johanna Ponce 
+//Last Modified Date: Feb, 26, 2016  
+//Last Modified by: Johanna Ponce 
+//Solar system objects constructor
+
+// <reference path="../../typings/tsd.d.ts"/>
 
 module objects {
     export class gameObject extends THREE.Mesh {

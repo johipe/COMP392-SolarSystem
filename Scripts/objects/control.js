@@ -1,3 +1,8 @@
+//Source File: Control.ts  
+//Author: Johanna Ponce 
+//Last Modified Date: Feb, 26, 2016  
+//Last Modified by: Johanna Ponce 
+//GUI Controller for the solar system
 /// <reference path="../../typings/tsd.d.ts"/>
 var objects;
 (function (objects) {
